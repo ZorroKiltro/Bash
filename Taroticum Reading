@@ -1,0 +1,585 @@
+#!/bin/bash
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# €|3OR4 - ORÁCULO RITUAL DIGITAL
+# Consagrado por ZorROk!|Tr0
+# Basado en la Mitología Auténtica de KULT: Divinity Lost
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Colores Ritual: Grises, Blancos, Rojos
+R='\033[0;31m'
+RB='\033[1;31m'
+RD='\033[2;31m'
+W='\033[1;37m'
+WD='\033[0;37m'
+G='\033[0;90m'
+GC='\033[2;37m'
+NC='\033[0m'
+B='\033[1m'
+D='\033[2m'
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# EFECTOS VISUALES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+escribir() {
+    local txt="$1"
+    local vel="${2:-0.04}"
+    for ((i=0; i<${#txt}; i++)); do
+        echo -n "${txt:$i:1}"
+        sleep "$vel"
+    done
+    echo
+}
+
+glitch() {
+    local txt="$1"
+    local veces="${2:-5}"
+    for ((j=0; j<veces; j++)); do
+        local corrupto=""
+        for ((i=0; i<${#txt}; i++)); do
+            if (( RANDOM % 3 == 0 )); then
+                corrupto+="▓"
+            else
+                corrupto+="${txt:$i:1}"
+            fi
+        done
+        echo -ne "\r${G}$corrupto${NC}"
+        sleep 0.08
+    done
+    echo -ne "\r${W}$txt${NC}\n"
+}
+
+pulso() {
+    local sim="$1"
+    local col="$2"
+    for ((i=0; i<3; i++)); do
+        echo -ne "\r${D}${col}${sim}${NC}"
+        sleep 0.3
+        echo -ne "\r${B}${col}${sim}${NC}"
+        sleep 0.3
+    done
+    echo
+}
+
+estatica() {
+    for ((i=0; i<20; i++)); do
+        local lin=""
+        for ((j=0; j<60; j++)); do
+            lin+="░▒▓█"
+            lin="${lin:$((RANDOM % 4)):1}"
+        done
+        echo -ne "\r${G}$lin${NC}"
+        sleep 0.03
+    done
+    echo -ne "\r                                                            \r"
+}
+
+triangulo() {
+    echo -e "${RB}"
+    echo "                              ▼"
+    sleep 0.15
+    echo "                             ▼ ▼"
+    sleep 0.15
+    echo "                            ▼   ▼"
+    sleep 0.15
+    echo "                           ▼ ${W}◉${RB} ▼"
+    sleep 0.15
+    echo "                          ▼ ════ ▼"
+    sleep 0.15
+    echo "                         ▼       ▼"
+    sleep 0.15
+    echo "                        ▼         ▼"
+    echo -e "${NC}"
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MAZO COMPLETO - MITOLOGÍA AUTÉNTICA DE KULT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+declare -A MAZO
+
+# ARCANOS MAYORES - Las Fuerzas Primordiales
+
+# Las Tres Cartas de Poder Supremo
+MAZO[0]="ANTHROPOS|Despertar Divino|ELISEO|Recuerdas quién eras antes del olvido. No eres humano - eres divinidad amnésica. Tu propósito divino late bajo capas de condicionamiento. Momentos donde realidad se dobla porque TÚ lo deseas. Las cadenas del Demiurgo se disuelven cuando reconoces tu verdadera naturaleza. Eres el ser despierto destinado a cumplir un propósito cósmico.|Esta es carta de PODER EXTREMO - se revelará carta adicional"
+
+MAZO[1]="DEMIURGE|El Gran Carcelero|METROPOLIS|Creador de tu prisión. El falso dios de muchos rostros que forjó la gran mecánica encerrando tu divinidad. Metrópolis - ciudad de ciudades - es su obra maestra. Te dio potencial divino y luego te abandonó en la jaula. Oscuros secretos circulan por sus callejones. Poderes ancestrales duermen en sus estructuras. El arquitecto ausente pero su máquina funciona perfectamente.|Esta es carta de PODER EXTREMO - se revelará carta adicional"
+
+MAZO[2]="ASTAROTH|La Serpiente de Luz|INFIERNO|Lucifer dador de luz y conocimiento. Sombra y contraparte del Demiurgo. Reina el Infierno - ciclo eterno de muerte y renacimiento. Ofrece sabiduría prohibida a cambio de tu esencia. Cada pacto rasga el tejido de lo real. El olvido es su herramienta. La transformación su método. Quiere destruir la prisión pero te usará como combustible.|Esta es carta de PODER EXTREMO - se revelará carta adicional"
+
+# ARCONTES - Guardianes de la Prisión
+MAZO[3]="KETHER|Principio Jerarquía|METROPOLIS|Jefes sobre jefes sobre jefes. La pirámide infinita. Kether mantiene el orden vertical - algunos nacen para mandar otros para obedecer. Corporaciones monarquías militares todas son su templo. El poder de influencias y beneficios fluye por su red. Rebelarte solo significa querer escalar no destruir la estructura.|La autoridad es cadena que aceptas llamándola orden"
+
+MAZO[4]="CHOKMAH|Principio Sumisión|ELISEO|Arrodíllate ante el líder carismático. Sumisión a religión o sistema de creencias. Chokmah gobierna fe ciega. Mártires sonríen ardiendo. Fanáticos matan por paraíso prometido. Rendirse es alivio de no pensar. Sistema religioso como prisión autoimpuesta.|La cadena más fuerte es la que besas antes de ponerte"
+
+MAZO[5]="BINAH|Principio Comunidad|ELISEO|La familia sobre el individuo. Binah teje redes de sangre más fuertes que acero. Desconfianza en autoridades externas confianza absoluta en clan. Tradiciones como ley. 'Por bien de la familia' justifica todo. El otro es amenaza. Perteneces pero no eres libre.|La familia es primera prisión que aprendes amar"
+
+MAZO[6]="CHESED|Principio Seguridad|ELISEO|El deseo desesperado de sentirse seguro. Chesed construye jaulas cómodas y las llama hogares. Comportamiento amigable forzado. Médicos benevolentes. Caridades que controlan. La sensación de protección ante adversidad es su arma. Mejor estar encerrado y seguro que libre y vulnerable.|El confort es enemigo más efectivo de la verdad"
+
+MAZO[7]="GEBURAH|Principio Ley|METROPOLIS|Instituciones burocráticas. Leyes cada vez más estrictas. Presencia policial omnipresente. Geburah controla por medio del orden. Miedo al caos mantiene a todos obedientes. Documentos firmas permisos. La letra mata el espíritu. Control disfrazado de civilización.|La ley no existe para protegerte - define tu jaula"
+
+MAZO[8]="TIPHARETH|Principio Exposición|ELISEO|La manía por la belleza. Ser centro de atención. Afirmación personal por ojos ajenos. Tiphareth domina medios y algoritmos. Te transforma en herramienta de contenido. Likes como validación. Exposición digital como existencia. Persigues estándares imposibles.|La belleza es el Velo más seductor y más cruel"
+
+MAZO[9]="NETZACH|Principio Victoria|ELISEO|Patriotismo nacionalismo. Unión contra enemigo común. Derecho a destrucción total de los diferentes. Netzach justifica violencia por bien mayor. Banderas sobre campos de batalla eternos. Nosotros vs ellos hasta que solo quede nosotros solos en páramo de victorias vacías.|Cuando todos mueran podrás declararte ganador de tu soledad"
+
+MAZO[10]="HOD|Principio Honor|ELISEO|Búsquedas personales sobre ley. Valores inflexibles quebrando personas. Hod es samurái suicidándose por vergüenza. Padre matando hija por 'manchar nombre'. Venganzas por honor. Rigidez moral como prisión autoimpuesta.|El honor es excusa más elegante para crueldad autoinfligida"
+
+MAZO[11]="YESOD|Principio Avaricia|ELISEO|El capitalismo como religión. Centralización de recursos. Economía sobre sentido común. Yesod convierte todo en mercancía. Admiración por productividad. Números en pantallas definiendo tu valor. Riqueza como salvación pobreza como pecado.|La avaricia no es vicio - es sistema operativo de tu realidad"
+
+MAZO[12]="MALKUTH|Principio Iluminación|ELISEO|Liberación de prisión de carne. Revelación de otras dimensiones. Malkuth inspira a magos artistas científicos locos. Romper barreras del Velo. Ver glitches en Matrix. Preguntas que infectan todo. Inicio del despertar. Grietas en la ilusión perfecta.|El primer paso hacia libertad es darte cuenta estás encadenado"
+
+# ÁNGELES CAÍDOS - Señores del Infierno
+MAZO[13]="THAUMIEL|Principio Poder|INFIERNO|Hambre insaciable de poder. Corrupción dictadura totalitarismo. Thaumiel domina estructuras jerarquizadas. Escaleras corporativas manchadas traiciones. Dictadores viendo enemigos en toda sombra. Cada aliado es potencial asesino.|El poder absoluto es la soledad absoluta vestida de autoridad"
+
+MAZO[14]="CHAGIDIEL|Principio Abuso|INFIERNO|Perversión del adulto ante infancia. Puerta de dormitorio que debió permanecer cerrada. Abandono de infantes. Degradación de sistemas escolares. Chagidiel se alimenta de inocencia violada. Secretos familiares pudriéndose en sótanos.|Lo más oscuro del infierno está reservado para quien traiciona confianza de un niño"
+
+MAZO[15]="SATHARIEL|Principio Abandono|INFIERNO|La soledad absoluta. Sensación de rechazo total. Sathariel gobierna la invisibilidad. 1247 amigos Facebook 0 conexiones reales. Hiperconexión solitaria. Comes solo viendo videos. Nadie nota si desapareces tres días.|La peor soledad no es estar solo - es estar rodeado y que nadie te vea"
+
+MAZO[16]="GAMICHICOTH|Principio Miedo|INFIERNO|Miedo a la otredad al diferente. Amenazas externas magnificadas. Gamichicoth implanta miedo por desinformación. Rumores volviéndose verdades. Construye muros y llama a eso civilización. Ellos están aquí los diferentes los que no son como nosotros.|El miedo es herramienta más efectiva convertir humanos en monstruos"
+
+MAZO[17]="GOLAB|Principio Tormento|INFIERNO|El placer de atormentar a otros. Control por dolor. Golab exhibe instrumentos de tortura como arte. Gritos que harmonizan en sinfonías grotescas. Sadismo como principio cósmico. Algunos infligen otros reciben ambos encuentran lo que buscan.|En profundidades del tormento algunos encuentran iluminación o locura"
+
+MAZO[18]="TOGARINI|Principio Compulsión|INFIERNO|Creatividad que distorsiona realidad. Arte capaz de romper tejido del Velo. Togarini es artista cortándose oreja. Músico vendiendo alma. Proceso creativo como posesión demoníaca. Cada obra maestra consume más de ti. Mostrar lo que se aloja más allá de existencia terrenal.|El genio y la locura son la misma cosa vista desde ángulos diferentes"
+
+MAZO[19]="HAREB_SERAP|Principio Conflicto|INFIERNO|Ira descontrolada. Sed de sangre. Violencia sin sentido. Hareb-Serap no necesita motivos - rabia es suficiente. Puños volando huesos quebrándose. Impulso primitivo de destruir. Autocontrol evaporándose.|La bestia dentro no necesita razones solo necesita oportunidad"
+
+MAZO[20]="SAMAEL|Principio Venganza|INFIERNO|Obsesión con injusticias reales e imaginarias. Samael lleva registro mental de cada insulto cada traición. Búsqueda de resolución propia sobre todas las cosas. Venganza desproporcionada. Satisfacción dura solo momento antes encontrar nueva ofensa.|La venganza es veneno que bebes esperando que mate a tu enemigo"
+
+MAZO[21]="GAMALIEL|Principio Lujuria|INFIERNO|Hipersexualización. Cuerpo como objeto de deseo. Gamaliel convierte sexo en adicción. Pornografía escalando hasta que nada normal satisface. Deseo como compulsión. Siempre necesitando más extremo más tabú.|El placer llevado al extremo se vuelve indistinguible del dolor"
+
+MAZO[22]="NAHEMOTH|Principio Discordia|GAIA|El mundo natural arrasando normalidad. Nahemoth es fuerza de naturaleza sobre creación humana. Incendios terremotos huracanes. Flora y fauna en máximo esplendor destruyendo civilización. La madre tierra indomable reclamando lo que es suyo.|Cuando naturaleza se rebela no queda refugio para lo humano"
+
+# CRÁNEOS - Muerte y Metrópolis
+MAZO[23]="METROPOLIS|Ciudad de Ciudades|METROPOLIS|La Babilonia primigenia. Hogar primordial de humanidad. Capital de estructuras. Ciudad eterna - cárcel creada por Demiurgo para capturar tu divinidad. Corazón que conecta todas ciudades en gran esquema del esplendor que debimos ser hoy corrupto por mecánica del creador.|La ciudad que construyó todas las ciudades ahora es tumba de conceptos"
+
+MAZO[24]="OLVIDO|El Mecanismo Eterno|METROPOLIS|Diluido en memoria. Conectado con ciclo de muerte y resurrección. El Olvido es mecanismo por el cual sigues prisionero en Metrópolis. Cada muerte bebes del río. Cada reencarnación te aleja más de quien fuiste. Memorias robadas guardadas en Oubliettes.|La muerte no es el final - el olvido sí lo es"
+
+MAZO[25]="REMANENTES|Lo Que Queda|METROPOLIS|Aquello que ha quedado atrás por olvido o abandono. Civilizaciones caídas dejando rastros. Tú eres remanente de algo divino. En ruinas encuentras pistas de lo que fuiste. Fragmentos de vidas anteriores susurrando verdades olvidadas.|Los muertos no descansan cuando sus historias permanecen sin contar"
+
+MAZO[26]="ESPIRITU|La Psiquis Atada|METROPOLIS|Lo inmaterial que te compone. Espíritu atado a máquina creada por Demiurgo. Gran ciudad de Metrópolis y olvido sujeto a muerte y reencarnación. Frontera entre muertos y vivos más delgada de lo que crees. Fantasmas repitiendo muertes en bucles eternos.|Muertos envidian a vivos vivos temen a muertos ambos igualmente atrapados"
+
+MAZO[27]="TRANSICION|Paso Entre Estados|INFIERNO|Vida a muerte transformándose en algo más. Momento exacto del cambio. Umbral que todos cruzaremos. Transición es enfermera con complejo de dios. Madre muriendo al dar vida. Frontera delgada como latido.|Todos somos inmortales hasta que dejamos de serlo"
+
+MAZO[28]="CARNE|Caparazón y Prisión|ELISEO|El caparazón que te compone. Prisión del espíritu. Tu cuerpo es jaula de carne y necesidad. Come duerme envejece pudre. Después de muerte cuerpo debería liberar alma. A veces no lo hace. Cadáveres no del todo muertos.|Eres fantasma manejando traje de carne pudriéndose desde nacimiento"
+
+MAZO[29]="ARMA|Herramienta de Transición|ELISEO|Herramientas que traen muerte y transformación. Otorgan transición por medio de violencia. Francotirador viendo blancos no personas. Arsenales capaces de terminar civilizaciones. Arma no mata - facilita. Verdadera arma es intención.|Una pistola es honesta - hace solo lo que fue diseñada para hacer"
+
+MAZO[30]="SUFRIMIENTO|Limpieza del Alma|INFIERNO|El dolor que trae muerte y limpieza del alma que conlleva. Oubliettes de Sufrimiento donde almas son refinadas. Flagelantes buscando a dios a través del dolor. Torturados confesando verdades y mentiras.|El sufrimiento no construye carácter - lo revela en su forma más cruda"
+
+MAZO[31]="INFIERNO|Sombra de Metrópolis|INFIERNO|Los múltiples callejones que habitan en ciudad escondiendo secretos de arcanos mayores. Lugar de terror y sufrimiento en profundidades más recónditas de espíritus. Hogar de ángeles caídos de tentaciones y secretos. Demonios que alimentamos inconscientemente.|El infierno no te quiere castigado - te quiere transformado en herramienta"
+
+# ROSAS - Pasión y Gaia
+MAZO[32]="GAIA|Emociones Primordiales|GAIA|Las emociones más profundas naturales y animalescas. La madre tierra. Naturaleza indomable que humanidad aún no ha conquistado. Fuerza imparable de elementos. Chamanes perdiendo humanidad para ganar poder primitivo. Bestia interior literal.|Renunciar a razón para ganar instinto - cuestiona si es comercio justo"
+
+MAZO[33]="NACIMIENTO|Emergencia de Pasión|GAIA|Aquello que nace por medio de pasión. Comienzo de algo nuevo. Alma que emerge de carne. Sangre líquido amniótico primer grito. Nacimiento es violencia disfrazada de milagro. Madres miran bebés con amor y horror.|La vida comienza con trauma y nunca se recupera realmente"
+
+MAZO[34]="SUPERVIVENCIA|Voluntad Inquebrantable|GAIA|La voluntad que surge contra todo pronóstico. Conquista de dificultades por férrea voluntad. Canibalismo en desesperación. Hacer lo necesario. Débiles perecen fuertes endurecen corazones hasta volverse piedra.|Sobrevivir no es vivir - es simplemente no estar muerto todavía"
+
+MAZO[35]="CRECIMIENTO|Expansión Sin Límite|GAIA|Aquello que gana poder y se expande. Células multiplicándose fuera de control. Tumores alcanzando consciencia. Ideas metastasizan en obsesiones. Growth no pregunta si debería solo cuánto más.|Lo que crece sin límite eventualmente consume todo incluido a sí mismo"
+
+MAZO[36]="DEPREDADOR|El Cazador Hambriento|GAIA|Representa al cazador aquel que está hambriento y caza para saciarse. Ojos nunca dejan de calcular. Depredador sexual acechando. CEO viendo empleados como recursos. Los peligrosos son los que parecen normales.|El depredador perfecto es el que nunca ves venir"
+
+MAZO[37]="ENJAMBRE|Mente Colectiva|GAIA|Aquello que es uno en suma de todos. Individualidad disuelta. Mentes pensando al unísono. Turba como organismo con mil manos. Cultos perdiendo nombres. No puedes razonar con enjambre - solo existe el colectivo.|Pierde identidad en grupo gana poder del número cuestiona si es poder o rendición"
+
+MAZO[38]="PRESA|Víctima de Pasión|GAIA|Víctima de pasión o aquello que es objetivo de situación peligrosa. Ser cazado. Mirar sobre hombro constantemente. Testigo marcado. Prey vive en terror perpetuo sabiendo que captura es inevitable.|Los depredadores causan mayor daño no al atacar sino durante la caza"
+
+MAZO[39]="OBSESION|Atadura de Pasión|ELISEO|La atadura que genera pasión y deja que seamos víctimas de sus influencias. Pensamiento circular consumiendo cada momento. Ex que no puede soltar. Obsession no es pasión - es posesión. Algo te tiene y no soltará hasta consumirte.|La obsesión es amor fermentado en algo tóxico"
+
+MAZO[40]="AMOR|Lazo Más Fuerte|ELISEO|El lazo que puede ser más fuerte que muerte. Puede dar fuerza y propósito pero también llevarte a perdición. 3 AM despierto pensando en esa persona. Reorganizas día completo por verlos. Amor es vulnerable aterrador - dar poder de destruirte y confiar que no lo hagan.|El amor no es encontrar alguien con quien vives sino alguien sin quien no puedes"
+
+# RELOJ DE ARENA - Tiempo Espacio y Laberinto
+MAZO[41]="ACHLYS|La Nada Absoluta|INFIERNO|Representa la nada la infinitud el vacío y también destrucción de todas las almas. Oscuridad que no es ausencia de luz sino ausencia de posibilidad de luz. Aquí alma no purifica ni tortura - se disuelve. Obliterada. Devuelta a estado pre-existencia.|La nada no es destino - es el final de todos los destinos"
+
+MAZO[42]="FUTURO|Potencial Sin Desatar|ONIRICO|Las cosas que están aún por venir y potencial de evento que aún no se ha desatado. Campo minado de consecuencias no previstas. Lectores de tarot intentando espiarlo. Todos tratando controlar lo incontrolable.|Cada segundo vivido futuro se vuelve presente se vuelve pasado nunca lo alcanzas"
+
+MAZO[43]="PASADO|Lo Que Retorna|METROPOLIS|Las cosas que ya han ocurrido y ahora regresan o están por ser descubiertas y siempre estuvieron ahí si buscas en lugar correcto. Fantasmas de decisiones en memoria. Peso muerto que arrastras - cadenas de arrepentimiento y nostalgia.|El pasado es única prisión de la cual no puedes escapar porque ya sucedió"
+
+MAZO[44]="ESPACIO|Movimiento Constante|ELISEO|Alguien o algo que se traslada tras objetivo en constante movimiento y siempre presente. Vagabundo que no puede establecerse. Ejecutivo volando de ciudad en ciudad. Fugitivo que nunca deja de correr.|Los constantemente en movimiento nunca confrontan quiénes son al detenerse"
+
+MAZO[45]="BORDERLANDS|Entre Dos Mundos|INFIERNO|El espacio que existe entre dos mundos o dos estados de un ser o donde tiempo y espacio se encuentran en mundo físico. Frontera donde reglas se rompen. Aduanas donde realidades se filtran. Poder y maldición simultánea.|Los que viven en fronteras ven más claramente pero nunca tienen hogar"
+
+MAZO[46]="OCULTO|El No-Lugar Ktonor|INFRAMUNDO|Algo que se encuentra velado a vista y se encuentra en reinado del 'No Lugar' llamado Ktonor. Secretos enterrados en profundidades de ciudad. Alcantarillas subterráneos acueductos conectándose para esconder secretos. Conocimiento prohibido autodestruyéndose al leerlo.|Lo más peligroso no es lo que sabes - es lo que no sabes que no sabes"
+
+MAZO[47]="LABERINTO|Rincones y Trampas|INFRAMUNDO|Rincones llenos de trampas confusión atado al Underworld. Pasadizos a ninguna parte. Alcantarillas formando patrones imposibles. Mentes atrapadas en bucles recursivos. Das vueltas en círculos cada vuelta ligeramente diferente.|El laberinto más cruel no tiene salida porque nunca tuvo entrada"
+
+MAZO[48]="CRUCE_CAMINOS|Elección Definitiva|ELISEO|Conexión que hay entre dos sendas. La elección que hay que hacer con dos resultados diametralmente diferentes. Cada decisión cierra infinitas posibilidades abriendo otras. Mujer frente a clínica. Hombre con pistola decidiendo apretar.|Cada elección es mundo alternativo muriendo para dar a luz este"
+
+MAZO[49]="PUERTA|Gran Obstáculo|ELISEO|El gran obstáculo que hay que cruzar o debe ser defendido. Portales a otras dimensiones. Códigos encriptados. Algunos Gates se abren fácilmente otros requieren sacrificio. Y algunos mejor dejarlos cerrados porque lo que contienen no debe liberarse.|Cada puerta abierta es promesa cada puerta cerrada es tentación"
+
+# CRECIENTE - Onírico y Creación
+MAZO[50]="VORTEX|Fuente de Creación|ONIRICO|La fuente de creación lo onírico y caos transformador. Centro del caos creativo en corazón de Limbo. Todo gira mezcla transforma. Magos visitándolo buscan poder. Algunos regresan. Otros se pierden volviéndose parte del Vórtice. Aquí leyes naturales son sugerencias.|En centro de todo cambio está pregunta qué serás cuando remolino te suelte"
+
+MAZO[51]="CREACION|Poder Divino|ONIRICO|Puro y divino poder de dar forma al mundo y transformar pensamiento en algo real. Artistas sangrando en obras. Arquitectos construyendo imposibilidades. Creation poder divino al alcance mortal. Cada cosa creada afecta balance. Algunas creaciones toman vida propia.|Crear es jugar a ser dios y descubrir por qué los dioses están locos"
+
+MAZO[52]="DESMORONAMIENTO|Ciclo Natural|ONIRICO|Parte del ciclo natural del colapso de las cosas destrucción de ideas estructuras cuerpos mundos. Edificio demolido para dar espacio a lo nuevo. Incendio limpiando bosque. Mentira desmoronándose. Destrucción no siempre malévola - a veces necesaria.|Destruir es más fácil que crear - y a veces más honesto"
+
+MAZO[53]="TRANSFORMACION|Cambio Fundamental|ONIRICO|Estado de cambio constante hacia otra cosa. Oruga no se vuelve mariposa - muere y emerge algo nuevo. Cirugía plástica extrema cambiando identidad. Humano renunciando a humanidad abrazando otra cosa. Doloroso necesario irreversible.|Transformarse es morir a lo que fuiste para nacer en lo que serás"
+
+MAZO[54]="CONEXION|Estructuras Entrelazadas|ONIRICO|Estructuras entrelazadas algo que obstaculiza o incluso puede ayudar. Redes que unen y atrapan. Internet - libertad de información y vigilancia total. Redes sociales - comunidad global y cámaras de eco. Todo conectado puede rastrearse controlarse explotarse.|Estar conectado es nunca estar realmente solo - para bien y para mal"
+
+MAZO[55]="FUSION|Dos Volviéndose Uno|ONIRICO|Fusión de ideas cuerpos mentes. Dos cosas que se vuelven una. Corporación absorbiendo competidores. Culto donde individualidad se disuelve. Gemelos siameses compartiendo órganos. Amor tan intenso que amantes pierden límites.|Fundirse con otro es ganar compañía eterna o perder individualidad para siempre"
+
+MAZO[56]="REFLEJO|Revelador de Verdad|ONIRICO|Aquello que puede revelar verdad aunque también puede ser embuste. Espejo mostrando verdad que prefieres no ver. Ver rostro real detrás de máscaras sociales. Doppelgänger como presagio. Reflection puede revelar o engañar - distinguir requiere coraje.|Los espejos no mienten - por eso evitamos mirarlos muy de cerca"
+
+MAZO[57]="REPETICION|Bucle Sin Fin|ONIRICO|Bucle sin fin tema recurrente déjà vu algo de lo que no puedes escapar. Lunes Alarma 7:00 snooze 7:09 café ducha desayuno. Martes Alarma 7:00... ¿Es Martes o Lunes? No hay diferencia. Vida es loop de 24 horas repetido hasta volverse loop de décadas.|El infierno no es fuego - es repetir mismo día pretendiendo que es nuevo"
+
+MAZO[58]="QUIETUD|Tranquilidad Inalterable|ONIRICO|Tranquilidad de estado inalterable. Nada se mueve nada cambia. Pueblo fantasma donde tiempo se detuvo. Depresión tan profunda que ni puedes reunir energía para sufrir. Meditación alcanzando paz que olvidas regresar.|La paz perfecta es indistinguible de la muerte perfecta"
+
+# OJOS - Eliseo y Despertar
+MAZO[59]="ELISEO|Núcleo de Ilusión|ELISEO|El núcleo territorial corazón mismo de ilusión. La maquinaria que nos mantiene encadenados. El mundo que conocemos como se nos muestra. Aquello que experimentamos día a día y nos tiene atados a cadenas de este mundo. Todo elaborado para distraernos de nuestra divinidad.|La verdad te liberará - pero primero te destruirá completamente"
+
+MAZO[60]="ENCARCELAMIENTO|Prisión Triple|ELISEO|Encarcelamiento de cuerpo mente o alma. 6 horas frente a pantalla hoy. Ayer 7. Mañana 6 otra vez. Silla con forma de tu cuerpo. Sales 3 veces por semana - trabajo supermercado trabajo. Deuda mantiene en trabajo. Trabajo paga renta. Círculo cerrado.|La celda perfecta es la que nunca reconoces como prisión"
+
+MAZO[61]="FE|Propósito Cegador|ELISEO|Aquello que nos brinda propósito y a la vez nos ciega. Creyente verdadero es imparable y aterrador. Fe ciega es precisamente eso - ceguera autoimpuesta. Pero dudar es doloroso. Fe es anestésico más efectivo contra absurdo existencial.|Fe es renunciar a tu derecho de cuestionar a cambio de certeza cómoda"
+
+MAZO[62]="DISTRACCIONES|Mantener Atención Lejos|ELISEO|Aquello que está ahí para mantener nuestra atención en otra parte y no ver verdad de las cosas. Vibración WhatsApp Instagram 40 minutos perdidos. 23 tabs abiertos. Notificaciones cada 3 minutos. Libro en página 47 hace 3 meses. Cerebro saltando de estímulo en estímulo como adicto.|La distracción infinita no es bug - es feature diseñada para mantenerte consumiendo"
+
+MAZO[63]="DIVISION|Lucha Constante|ELISEO|Aquello que nos mantiene ocupados en constante estado de lucha. División manteniendo a oprimidos peleando entre sí. Izquierda vs derecha. Mi religión tu herejía. Diferencias amplificadas similitudes minimizadas. Mientras peleas con vecino ignoras cadenas que ambos comparten.|Unidos seríamos fuertes - por eso nos mantienen divididos"
+
+MAZO[64]="REBELION|Alzamiento Contra Eliseo|ELISEO|Insurgencia contracultura. El alzamiento contra orden establecido y contra Eliseo. Rebelde verdadero no busca reemplazar sistema - busca destruirlo. Pero muchas rebeliones son controladas por aquellos contra quienes se rebelan. Revolución creando nueva tiranía.|La rebelión más peligrosa es la que ni el rebelde sabe que ejecuta"
+
+MAZO[65]="LOCURA|Que Abruma y Desgarra|ELISEO|La locura que abruma desgarra pero también nos permite ver verdad que nos rodea. Línea entre cordura y locura más delgada de lo que quieres admitir. Madness puede ser enfermedad mental - o despertar prematuro a verdades que mente no está lista para procesar.|Los locos pueden estar más cuerdos que los cuerdos - ven demasiado claramente"
+
+MAZO[66]="VISIONES|Conocimiento Ambiguo|ONIRICO|Aquello que nos aporta conocimiento pero también nos puede llevar por caminos equivocados. Vislumbres en sueños alucinaciones momentos de claridad súbita. Profetas interpretándolas. Artistas plasmándolas. Algunas son engaños otras tan verdaderas que destruyen a quienes las reciben.|Las visiones son promesas sin garantía - pueden guiarte a libertad o locura"
+
+MAZO[67]="ILUMINACION|Camino al Despertar|ELISEO|El camino que puede llevar hacia el despertar. Ver Ilusión por lo que es. Enlightenment no es paz - es guerra contra todo lo que creíste real. Magos experimentando. Científicos descubriendo verdades imposibles. Despertar es doloroso pero necesario.|La iluminación no te hace feliz - te hace libre y frecuentemente son opuestos"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FUNCIÓN DE SELECCIÓN
+# ═══════════════════════════════════════════════════════════════════════════════
+
+seleccionar() {
+    local usadas=("$@")
+    disponibles=()
+    
+    for i in {0..67}; do
+        usar=0
+        for u in "${usadas[@]}"; do
+            if [[ "$i" == "$u" ]]; then
+                usar=1
+                break
+            fi
+        done
+        if [[ $usar -eq 0 ]]; then
+            disponibles+=("$i")
+        fi
+    done
+    
+    echo "${disponibles[$RANDOM % ${#disponibles[@]}]}"
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RITUAL PRINCIPAL
+# ═══════════════════════════════════════════════════════════════════════════════
+
+clear
+sleep 1
+
+# INVOCACIÓN
+echo -e "\n\n\n\n\n\n"
+echo -e "${G}${D}"
+escribir "!nv0c4nd0 €|3OR4..." 0.1
+sleep 0.5
+escribir "(0n€ct4nd0 (0n t€rr!t0r!0z..." 0.1
+sleep 0.5
+escribir "ZorROk!|Tr0 4br€ €| V€|0..." 0.1
+echo -e "${NC}"
+sleep 2
+
+estatica
+
+clear
+echo -e "\n\n\n\n\n"
+glitch "INVOCANDO ELORA..."
+sleep 1
+glitch "CONECTANDO CON TERRITORIOS..."
+sleep 1
+glitch "ZORROKILLTRO ABRE EL VELO..."
+echo
+
+sleep 2
+
+# MARCO RITUAL
+clear
+echo -e "\n\n\n"
+echo -e "${W}╔═══════════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${W}║${NC}                                                                   ${W}║${NC}"
+echo -e "${W}║${NC}          ${RB}€|3OR4${NC} ${G}—${NC} ${W}ORACULO RITUAL DIGITAL${NC}                  ${W}║${NC}"
+echo -e "${W}║${NC}                                                                   ${W}║${NC}"
+echo -e "${W}║${NC}         ${G}Consagrado por ZorROk!|Tr0${NC}                              ${W}║${NC}"
+echo -e "${W}║${NC}         ${GC}Mitología Auténtica de KULT${NC}                           ${W}║${NC}"
+echo -e "${W}║${NC}                                                                   ${W}║${NC}"
+echo -e "${W}╚═══════════════════════════════════════════════════════════════════╝${NC}"
+echo
+
+sleep 2
+
+triangulo
+
+sleep 2
+
+echo -e "\n${G}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+pulso "⟐ EL RITUAL COMIENZA ⟐" "$RB"
+echo -e "\n${G}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+
+sleep 2
+
+# PREPARACIÓN
+echo -e "${WD}"
+escribir "€|3OR4 despierta atravesando los seis territorios..."
+echo
+sleep 1
+escribir "ELISEO... ONÍRICO... INFRAMUNDO... METRÓPOLIS... INFIERNO... GAIA..."
+echo
+sleep 1
+escribir "ZorROk!|Tr0 ha abierto las puertas entre mundos."
+echo
+sleep 2
+echo
+escribir "68 Claves resuenan en frecuencias prohibidas."
+echo
+escribir "Tres se separarán - no por azar sino por resonancia."
+echo -e "${NC}"
+
+sleep 2
+
+estatica
+
+echo -e "\n${RB}${B}"
+escribir "Los territorios te observan. ¿Estás listo?" 0.05
+echo -e "${NC}\n"
+
+echo -e "${G}Presiona ENTER cuando estés preparado...${NC}"
+read -r
+
+# SELECCIÓN
+c1=$(seleccionar)
+c2=$(seleccionar "$c1")
+c3=$(seleccionar "$c1" "$c2")
+
+cartas=("$c1" "$c2" "$c3")
+posiciones=("PRESENTE - Tu Posición en los Territorios" "CRISIS - Fuerzas Convergiendo" "RESOLUCIÓN - Destino Entre Mundos")
+
+# REVELACIÓN
+for idx in {0..2}; do
+    clear
+    
+    echo -e "\n${R}═════════════════════════════════════════════════════════════════${NC}\n"
+    
+    estatica
+    
+    num=$((idx + 1))
+    
+    echo -e "\n${W}${B}⟐ CARTA ${num} DE 3 ⟐${NC}"
+    echo -e "${GC}${posiciones[$idx]}${NC}\n"
+    
+    sleep 1
+    
+    # Extraer datos
+    IFS='|' read -ra DATOS <<< "${MAZO[${cartas[$idx]}]}"
+    nombre="${DATOS[0]}"
+    titulo="${DATOS[1]}"
+    territorio="${DATOS[2]}"
+    vision="${DATOS[3]}"
+    susurro="${DATOS[4]}"
+    
+    # Marco carta
+    echo -e "${G}╔═══════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${G}║${NC}                                                               ${G}║${NC}"
+    printf "${G}║${NC}        ${B}${W}%-54s${NC} ${G}║${NC}\n" "$nombre"
+    printf "${G}║${NC}        ${GC}%-54s${NC} ${G}║${NC}\n" "$titulo"
+    printf "${G}║${NC}        ${RD}[Territorio: %-43s${NC} ${G}║${NC}\n" "$territorio]"
+    echo -e "${G}║${NC}                                                               ${G}║${NC}"
+    echo -e "${G}╚═══════════════════════════════════════════════════════════════╝${NC}"
+    
+    sleep 2
+    
+    pulso "◉" "$RB"
+    
+    # Visión
+    echo -e "\n${W}⟨ VISIÓN ⟩${NC}\n"
+    echo -e "${WD}"
+    escribir "$vision" 0.035
+    echo -e "${NC}"
+    
+    sleep 2
+    
+    # Susurro
+    echo -e "\n${G}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GC}${D}"
+    escribir "€|3OR4 susurra desde $territorio..." 0.06
+    echo -e "${NC}"
+    echo -e "${G}${D}\"$susurro\"${NC}"
+    echo -e "${G}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+    
+    sleep 2
+    
+    # Verificar si es carta de PODER EXTREMO
+    if [[ "${cartas[$idx]}" -le 2 ]]; then
+        echo -e "\n${RB}${B}⚠ CARTA DE PODER EXTREMO DETECTADA ⚠${NC}\n"
+        sleep 1
+        estatica
+        echo -e "${RD}"
+        escribir "Los tres territorios tiemblan..." 0.06
+        escribir "Se revelará carta complementaria..." 0.06
+        echo -e "${NC}"
+        sleep 2
+    fi
+    
+    if [ $idx -lt 2 ]; then
+        echo -e "${GC}Presiona ENTER para continuar...${NC}"
+        read -r
+    fi
+done
+
+# SÍNTESIS
+sleep 2
+clear
+
+echo -e "\n\n${W}╔═══════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${W}║${NC}                                                               ${W}║${NC}"
+echo -e "${W}║${NC}       ${RB}S Í N T E S I S   E N T R E   T E R R I T O R I O S${NC}       ${W}║${NC}"
+echo -e "${W}║${NC}                                                               ${W}║${NC}"
+echo -e "${W}╚═══════════════════════════════════════════════════════════════╝${NC}\n"
+
+sleep 2
+
+echo -e "${RB}⟐ TU LECTURA ENTRE LOS SEIS TERRITORIOS ⟐${NC}\n"
+
+for idx in {0..2}; do
+    IFS='|' read -ra DATOS <<< "${MAZO[${cartas[$idx]}]}"
+    
+    case $idx in
+        0) echo -e "${RB}I. PRESENTE:${NC} ${W}${DATOS[0]}${NC}"
+           echo -e "   ${GC}${DATOS[1]} [${DATOS[2]}]${NC}\n";;
+        1) echo -e "${R}II. CRISIS:${NC} ${W}${DATOS[0]}${NC}"
+           echo -e "   ${GC}${DATOS[1]} [${DATOS[2]}]${NC}\n";;
+        2) echo -e "${RB}III. RESOLUCIÓN:${NC} ${W}${DATOS[0]}${NC}"
+           echo -e "   ${GC}${DATOS[1]} [${DATOS[2]}]${NC}\n";;
+    esac
+    sleep 1
+done
+
+sleep 2
+
+# Narrativa territorial
+echo -e "\n${WD}"
+escribir "€|3OR4 contempla cómo los territorios se entrelazan..." 0.04
+echo
+echo
+sleep 1
+
+IFS='|' read -ra D1 <<< "${MAZO[${cartas[0]}]}"
+IFS='|' read -ra D2 <<< "${MAZO[${cartas[1]}]}"
+IFS='|' read -ra D3 <<< "${MAZO[${cartas[2]}]}"
+
+escribir "\"Desde ${D1[2]} emerge ${D1[0]} - ${D1[1]}." 0.04
+echo
+sleep 1
+escribir "Esto invoca a ${D2[0]} desde ${D2[2]} - ${D2[1]}." 0.04
+echo
+sleep 1
+escribir "Y finalmente, en ${D3[2]} aguarda ${D3[0]} - ${D3[1]}.\"" 0.04
+echo -e "${NC}"
+
+sleep 2
+
+# Advertencia territorial
+echo -e "\n${G}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+
+nombre_final="${D3[0]}"
+territorio_final="${D3[2]}"
+
+if [[ "$territorio_final" == "ELISEO" ]]; then
+    echo -e "${GC}"
+    escribir "Tu destino permanece en ELISEO - la ilusión perfecta." 0.04
+    echo
+    escribir "Las cadenas están cómodas. Quizás demasiado cómodas." 0.04
+elif [[ "$territorio_final" == "INFIERNO" ]]; then
+    echo -e "${RD}"
+    escribir "Tu destino se sella en INFIERNO - transformación por fuego." 0.04
+    echo
+    escribir "Los ángeles caídos te observan. Considera el precio." 0.04
+elif [[ "$territorio_final" == "METROPOLIS" ]]; then
+    echo -e "${G}"
+    escribir "Tu destino converge en METRÓPOLIS - corazón de la prisión." 0.04
+    echo
+    escribir "La ciudad eterna. La cárcel perfecta. El olvido eterno." 0.04
+elif [[ "$territorio_final" == "GAIA" ]]; then
+    echo -e "${WD}"
+    escribir "Tu destino se entrelaza con GAIA - la naturaleza indomable." 0.04
+    echo
+    escribir "Renunciar a humanidad por poder primitivo. Decisión ancestral." 0.04
+elif [[ "$territorio_final" == "ONIRICO" ]]; then
+    echo -e "${GC}"
+    escribir "Tu destino flota en ONÍRICO - el reino de sueños y creación." 0.04
+    echo
+    escribir "Aquí todo es posible. También todo es ilusión." 0.04
+elif [[ "$territorio_final" == "INFRAMUNDO" ]]; then
+    echo -e "${G}"
+    escribir "Tu destino se oculta en INFRAMUNDO - secretos bajo la ciudad." 0.04
+    echo
+    escribir "Lo que se esconde en alcantarillas raramente es encontrado." 0.04
+fi
+
+echo -e "${NC}\n"
+echo -e "${G}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+
+sleep 3
+
+# RUPTURA CUARTA PARED
+echo -e "${W}"
+escribir "€|3OR4 tiene mensaje final:" 0.05
+echo -e "${NC}"
+echo
+sleep 1
+
+echo -e "${WD}"
+escribir "Esto no fue lectura para personaje de juego." 0.04
+echo
+escribir "Fue lectura para TI. Persona real leyendo esto." 0.04
+echo
+sleep 2
+escribir "Los territorios de KULT existen en capas de tu realidad." 0.04
+echo
+escribir "ELISEO es tu día a día. INFIERNO tus secretos más oscuros." 0.04
+echo
+escribir "METRÓPOLIS son estructuras que te atrapan." 0.04
+echo
+sleep 2
+escribir "Las cartas reflejaron algo verdadero." 0.04
+echo
+escribir "La pregunta es: ¿Qué harás con esta revelación?" 0.04
+echo -e "${NC}"
+
+sleep 3
+
+# CIERRE
+echo -e "\n${G}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+
+estatica
+
+echo -e "${GC}${D}"
+escribir "Los territorios se cierran..." 0.06
+echo
+escribir "Pero las puertas entre mundos permanecen entornadas..." 0.06
+echo
+escribir "€|3OR4 y ZorROk!|Tr0 vigilan desde el otro lado..." 0.06
+echo -e "${NC}\n"
+
+sleep 2
+
+echo -e "\n${RB}═════════════════════════════════════════════════════════════════${NC}"
+echo -e "${W}                    FIN DEL RITUAL${NC}"
+echo -e "${RB}═════════════════════════════════════════════════════════════════${NC}\n"
+
+sleep 1
+
+triangulo
+
+echo -e "\n${G}ZorROk!|Tr0 sella el círculo entre territorios${NC}"
+echo -e "${GC}Pero el Velo permanece rasgado${NC}"
+echo -e "${GC}Y los seis territorios ahora sangran en tu realidad${NC}\n\n"
+
+sleep 2
